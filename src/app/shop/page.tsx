@@ -108,8 +108,10 @@ function ShopPageContent() {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/categories`);
-        const names = response.data.data.map((c: any) => c.name);
-        setCategories(["All", ...names]);
+        if (response.data && Array.isArray(response.data.data)) {
+          const names = response.data.data.map((c: any) => c.name);
+          setCategories(["All", ...names]);
+        }
       } catch (error) {
         console.error("Failed to fetch categories:", error);
       } finally {

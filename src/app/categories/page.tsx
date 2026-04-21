@@ -59,7 +59,11 @@ export default function CategoriesPage() {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/categories`);
-        setCategories(response.data.data);
+        if (response.data && Array.isArray(response.data.data)) {
+          setCategories(response.data.data);
+        } else {
+          setCategories([]);
+        }
       } catch (error) {
         console.error("Failed to fetch categories:", error);
       } finally {
