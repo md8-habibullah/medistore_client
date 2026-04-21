@@ -17,7 +17,8 @@ import {
   Menu,
   X,
   Bell,
-  Heart
+  Heart,
+  Shield
 } from "lucide-react";
 import {
   DropdownMenu,
