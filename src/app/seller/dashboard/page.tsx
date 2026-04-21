@@ -62,7 +62,8 @@ export default function SellerDashboard() {
          totalOrders: orders.length,
          activeMedicines: medicines.length || 0, 
          totalSales: orders.reduce((acc: number, curr: any) => acc + Number(curr.totalPrice), 0) / 100,
-         pendingOrders: orders.filter((o: any) => o.status === "PENDING").length
+         pendingOrders: orders.filter((o: any) => o.status === "PENDING").length,
+         rawOrders: orders
        };
     },
     enabled: !!session,
@@ -118,35 +119,47 @@ export default function SellerDashboard() {
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-teal-500/5 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2" />
       </div>
 
-      {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        {statCards.map((stat, i) => (
-          <Card key={stat.title} className="group rounded-[40px] border-zinc-100 shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden">
-            <CardContent className="p-8 space-y-6">
-              <div className="flex items-center justify-between">
-                <div className={`p-4 rounded-2xl ${stat.bg} ${stat.color} group-hover:scale-110 transition-transform`}>
-                  <stat.icon className="h-7 w-7" />
+        {statCards.map((stat, i) => {
+          const content = (
+            <Card className="group h-full rounded-[48px] border-zinc-100 shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden cursor-pointer bg-white">
+              <CardContent className="p-10 space-y-8">
+                <div className="flex items-center justify-between">
+                  <div className={`p-5 rounded-3xl ${stat.bg} ${stat.color} group-hover:scale-110 transition-transform shadow-sm`}>
+                    <stat.icon className="h-8 w-8" />
+                  </div>
+                  <Badge className={`${stat.bg} ${stat.color} border-none font-bold text-xs px-4 py-1.5 rounded-full`}>
+                     {stat.trend}
+                  </Badge>
                 </div>
-                <Badge className={`${stat.bg} ${stat.color} border-none font-bold text-[10px] px-3 py-1 rounded-full`}>
-                   {stat.trend}
-                </Badge>
-              </div>
-              <div className="space-y-1">
-                <p className="text-xs font-bold text-zinc-400 uppercase tracking-widest">{stat.title}</p>
-                <h3 className="text-3xl font-extrabold text-zinc-900 font-heading tracking-tight">{stat.value}</h3>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+                <div className="space-y-3">
+                  <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-[0.3em]">{stat.title}</p>
+                  <h3 className="text-6xl font-black text-zinc-900 font-heading tracking-tighter leading-none">{stat.value}</h3>
+                </div>
+              </CardContent>
+            </Card>
+          );
+
+          if (stat.title === "Medicines") {
+            return <Link key={stat.title} href="/seller/medicines">{content}</Link>;
+          }
+          if (stat.title === "Orders") {
+            return <Link key={stat.title} href="/seller/orders">{content}</Link>;
+          }
+          if (stat.title === "Pending") {
+            return <Link key={stat.title} href="/seller/orders">{content}</Link>;
+          }
+          return <div key={stat.title}>{content}</div>;
+        })}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
         {/* Recent Orders */}
-        <Card className="lg:col-span-2 rounded-[48px] border-zinc-100 shadow-sm overflow-hidden">
+        <Card className="lg:col-span-2 rounded-[48px] border-zinc-100 shadow-sm overflow-hidden bg-white">
           <CardHeader className="p-10 border-b border-zinc-50 flex flex-row items-center justify-between">
             <div className="space-y-1">
               <CardTitle className="text-2xl font-bold font-heading">Fulfillment Queue</CardTitle>
-              <p className="text-sm text-zinc-500">Manage your latest customer orders</p>
+              <p className="text-sm text-zinc-500">Orders awaiting processing or shipment</p>
             </div>
             <Link href="/seller/orders">
               <Button variant="ghost" className="text-teal-600 font-bold hover:bg-teal-50 rounded-2xl px-6">
@@ -156,14 +169,49 @@ export default function SellerDashboard() {
             </Link>
           </CardHeader>
           <CardContent className="p-0">
-             <div className="p-20 text-center space-y-4">
-                <div className="p-6 bg-zinc-50 rounded-full w-fit mx-auto">
-                   <ShoppingBag className="h-10 w-10 text-zinc-200" />
-                </div>
-                <div className="space-y-2">
-                   <p className="text-xl font-bold text-zinc-900 font-heading">No pending orders</p>
-                   <p className="text-zinc-500 max-w-xs mx-auto">New orders from your pharmacy will appear here automatically.</p>
-                </div>
+             <div className="divide-y divide-zinc-50">
+                {(() => {
+                   const pendingOrders = stats?.rawOrders?.filter((o: any) => o.status !== "DELIVERED" && o.status !== "CANCELLED").slice(0, 5) || [];
+                   
+                   if (pendingOrders.length === 0) {
+                      return (
+                        <div className="p-20 text-center space-y-4">
+                           <div className="p-6 bg-zinc-50 rounded-full w-fit mx-auto">
+                              <ShoppingBag className="h-10 w-10 text-zinc-200" />
+                           </div>
+                           <div className="space-y-2">
+                              <p className="text-xl font-bold text-zinc-900 font-heading">No pending tasks</p>
+                              <p className="text-zinc-500 max-w-xs mx-auto">Everything is shipped! Sit back and relax.</p>
+                           </div>
+                        </div>
+                      );
+                   }
+
+                   return pendingOrders.map((order: any) => (
+                      <div key={order.id} className="p-6 hover:bg-zinc-50/50 transition-colors flex items-center justify-between group">
+                         <div className="flex items-center gap-4">
+                            <div className="h-12 w-12 rounded-2xl bg-teal-50 flex items-center justify-center">
+                               <Package className="h-6 w-6 text-teal-600" />
+                            </div>
+                            <div>
+                               <p className="text-sm font-bold text-zinc-900">Order #{order.id.slice(0, 8)}</p>
+                               <p className="text-xs text-zinc-500">{order.user?.name} • {new Date(order.createdAt).toLocaleDateString()}</p>
+                            </div>
+                         </div>
+                         <div className="flex items-center gap-6">
+                            <div className="text-right">
+                               <p className="text-sm font-bold text-zinc-900">${(Number(order.totalPrice) / 100).toFixed(2)}</p>
+                               <p className="text-[10px] font-bold text-teal-600 uppercase tracking-widest">{order.status}</p>
+                            </div>
+                            <Link href="/seller/orders">
+                               <Button variant="outline" size="icon" className="h-10 w-10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <ChevronRight className="h-4 w-4" />
+                                </Button>
+                            </Link>
+                         </div>
+                      </div>
+                   ));
+                })()}
              </div>
           </CardContent>
         </Card>

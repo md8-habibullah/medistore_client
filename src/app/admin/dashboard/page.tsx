@@ -79,7 +79,27 @@ export default function AdminDashboard() {
     }
   });
 
-  if (sessionLoading || usersLoading) {
+  const { data: platformStats, isLoading: platformStatsLoading } = useQuery({
+    queryKey: ["admin-platform-stats"],
+    queryFn: async () => {
+       const [ordersRes, medicinesRes] = await Promise.all([
+         axios.get(`${API_BASE_URL}/orders/seller-orders`, { withCredentials: true }), // Admin gets ALL orders here
+         axios.get(`${API_BASE_URL}/medicine`, { withCredentials: true })
+       ]);
+       
+       const orders = ordersRes.data.data || ordersRes.data || [];
+       const medicines = medicinesRes.data.data || medicinesRes.data || [];
+
+       return {
+         totalOrders: orders.length,
+         totalRevenue: orders.reduce((acc: number, curr: any) => acc + Number(curr.totalPrice), 0) / 100,
+         totalMedicines: medicines.length || 0,
+       };
+    },
+    enabled: !!session,
+  });
+
+  if (sessionLoading || usersLoading || platformStatsLoading) {
     return (
       <div className="flex h-[calc(100vh-64px)] items-center justify-center">
         <Loader2 className="h-10 w-10 animate-spin text-teal-600" />
@@ -89,9 +109,9 @@ export default function AdminDashboard() {
 
   const stats = [
     { title: "Total Users", value: users?.length || 0, icon: Users, color: "text-blue-600", bg: "bg-blue-50" },
-    { title: "Active Sellers", value: users?.filter((u: any) => u.role === "SELLER").length || 0, icon: ShieldCheck, color: "text-emerald-600", bg: "bg-emerald-50" },
-    { title: "Banned Accounts", value: users?.filter((u: any) => u.banned).length || 0, icon: ShieldAlert, color: "text-red-600", bg: "bg-red-50" },
-    { title: "Total Revenue", value: "$45.2k", icon: TrendingUp, color: "text-teal-600", bg: "bg-teal-50" },
+    { title: "Platform Revenue", value: `$${platformStats?.totalRevenue.toFixed(2)}`, icon: TrendingUp, color: "text-teal-600", bg: "bg-teal-50" },
+    { title: "Total Orders", value: platformStats?.totalOrders || 0, icon: ShoppingBag, color: "text-orange-600", bg: "bg-orange-50" },
+    { title: "Medicines", value: platformStats?.totalMedicines || 0, icon: Pill, color: "text-purple-600", bg: "bg-purple-50" },
   ];
 
   const filteredUsers = users?.filter((user: any) => 
