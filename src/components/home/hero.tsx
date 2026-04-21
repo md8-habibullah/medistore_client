@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 
 export function Hero() {
   return (
-    <section className="relative h-[800px] w-full overflow-hidden flex items-center justify-center text-center">
+    <section className="relative min-h-[800px] h-auto py-32 md:py-0 w-full overflow-hidden flex items-center justify-center text-center">
       <Image
         src="/images/medical_hero_banner_1776588021141.png"
         alt="Premium Pharmacy"
@@ -24,7 +24,7 @@ export function Hero() {
             <span className="text-teal-100 text-[10px] font-bold uppercase tracking-[0.2em]">The Future of Online Pharmacy</span>
           </div>
           
-          <h1 className="text-6xl md:text-9xl font-extrabold text-white font-heading leading-[0.85] animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-200 tracking-tighter">
+          <h1 className="text-5xl md:text-8xl lg:text-9xl font-extrabold text-white font-heading leading-[0.85] animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-200 tracking-tighter">
             Better Care. <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-emerald-400 to-teal-500 italic">Better Life.</span>
           </h1>
@@ -35,19 +35,19 @@ export function Hero() {
           
           <div className="flex flex-wrap items-center justify-center gap-6 pt-8 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-500">
             <Link href="/shop">
-              <Button size="lg" className="bg-teal-600 hover:bg-teal-700 h-20 px-14 rounded-full font-black text-xl shadow-[0_20px_60px_rgba(13,148,136,0.4)] group transition-all hover:scale-105 active:scale-95">
+              <Button size="lg" className="bg-teal-600 hover:bg-teal-700 h-14 px-8 md:h-20 md:px-14 rounded-full font-black text-lg md:text-xl shadow-[0_20px_60px_rgba(13,148,136,0.4)] group transition-all hover:scale-105 active:scale-95">
                 Explore Shop
-                <ArrowRight className="ml-3 h-7 w-7 transition-transform group-hover:translate-x-3" />
+                <ArrowRight className="ml-3 h-5 w-5 md:h-7 md:w-7 transition-transform group-hover:translate-x-3" />
               </Button>
             </Link>
             <Link href="/register?role=SELLER">
-              <Button size="lg" className="bg-white hover:bg-zinc-100 h-20 px-14 rounded-full font-black text-xl text-zinc-950 shadow-2xl transition-all hover:scale-105 active:scale-95">
+              <Button size="lg" className="bg-white hover:bg-zinc-100 h-14 px-8 md:h-20 md:px-14 rounded-full font-black text-lg md:text-xl text-zinc-950 shadow-2xl transition-all hover:scale-105 active:scale-95">
                 Become a Seller
               </Button>
             </Link>
           </div>
 
-          <div className="pt-20 grid grid-cols-1 sm:grid-cols-3 gap-12 max-w-3xl mx-auto animate-in fade-in duration-1000 delay-700 border-t border-white/5">
+          <div className="pt-16 md:pt-20 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-12 max-w-3xl mx-auto animate-in fade-in duration-1000 delay-700 border-t border-white/5">
              <div className="space-y-1">
                 <p className="text-4xl font-black text-white font-heading tracking-tighter">50k+</p>
                 <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-[0.2em]">Active Users</p>

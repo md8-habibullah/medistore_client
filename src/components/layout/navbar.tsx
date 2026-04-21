@@ -39,6 +39,7 @@ export function Navbar() {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -115,8 +116,13 @@ export function Navbar() {
 
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 lg:hidden">
-            <Button variant="ghost" size="icon" className="text-zinc-400 hover:text-teal-600 rounded-2xl h-11 w-11 hover:bg-teal-50">
-              <Search className="h-5 w-5" />
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="text-zinc-400 hover:text-teal-600 rounded-2xl h-11 w-11 hover:bg-teal-50"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X className="h-6 w-6 text-zinc-900" /> : <Menu className="h-6 w-6 text-zinc-900" />}
             </Button>
           </div>
           <div className="hidden md:flex items-center gap-2">
@@ -126,7 +132,7 @@ export function Navbar() {
           </div>
           
           <Link href="/cart">
-            <Button className="rounded-2xl h-12 px-6 bg-zinc-950 hover:bg-zinc-800 text-white shadow-xl shadow-zinc-200 transition-all hover:scale-105 active:scale-95 group">
+            <Button className="rounded-2xl h-12 px-3 sm:px-6 bg-zinc-950 hover:bg-zinc-800 text-white shadow-xl shadow-zinc-200 transition-all hover:scale-105 active:scale-95 group">
               <div className="flex items-center gap-2.5">
                 <div className="relative">
                   <ShoppingBag className="h-5 w-5" />
@@ -238,6 +244,49 @@ export function Navbar() {
           )}
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden absolute top-full left-0 w-full bg-white border-b border-zinc-100 shadow-lg p-4 flex flex-col gap-4 max-h-[calc(100vh-64px)] overflow-y-auto">
+          <div className="flex items-center bg-zinc-50 rounded-2xl px-4 py-3 mb-2">
+            <Search className="h-5 w-5 text-zinc-400 mr-2" />
+            <input 
+              type="text" 
+              placeholder="Search..."
+              className="w-full bg-transparent border-none focus:outline-none text-sm font-medium"
+            />
+          </div>
+          <nav className="flex flex-col gap-2">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`p-3 rounded-xl font-bold uppercase tracking-widest text-sm transition-colors ${
+                  pathname === link.href ? "bg-teal-50 text-teal-600" : "text-zinc-600 hover:bg-zinc-50"
+                }`}
+              >
+                {link.name}
+              </Link>
+            ))}
+          </nav>
+          
+          {!session && (
+            <div className="flex flex-col gap-2 mt-4 pt-4 border-t border-zinc-100 sm:hidden">
+              <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button variant="outline" className="w-full justify-center rounded-xl h-12 font-bold border-zinc-200">
+                  Log In
+                </Button>
+              </Link>
+              <Link href="/register" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button className="w-full justify-center bg-zinc-900 hover:bg-zinc-800 text-white rounded-xl h-12 font-bold">
+                  Get Started
+                </Button>
+              </Link>
+            </div>
+          )}
+        </div>
+      )}
     </header>
   );
 }

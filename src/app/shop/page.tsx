@@ -331,12 +331,12 @@ function ShopPageContent() {
                 <Card 
                   key={med.id} 
                   className={`group rounded-[40px] border-zinc-100 shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer ${
-                    view === "list" ? "flex flex-row h-52" : ""
+                    view === "list" ? "flex flex-col sm:flex-row h-auto sm:h-52" : ""
                   }`}
                   onClick={() => router.push(`/shop/${med.id}`)}
                 >
                   <div className={`relative bg-zinc-50 p-6 flex items-center justify-center ${
-                    view === "list" ? "w-64" : "aspect-[4/3]"
+                    view === "list" ? "w-full sm:w-64 h-48 sm:h-auto shrink-0" : "aspect-[4/3]"
                   }`}>
                     <Image 
                       src="/images/medicine_pack_placeholder_1776588054881.png"

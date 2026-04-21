@@ -22,8 +22,8 @@ export default function Home() {
               <h2 className="text-4xl md:text-6xl font-extrabold text-white font-heading leading-tight">Trending <br /> <span className="text-teal-400">Medicines.</span></h2>
               <p className="text-zinc-400 text-lg max-w-lg">Our most requested healthcare products this week, verified for quality and stock.</p>
             </div>
-            <Link href="/shop">
-              <Button size="lg" className="bg-white text-zinc-900 hover:bg-zinc-100 h-16 px-10 rounded-full font-bold text-lg shadow-xl shadow-white/5">
+            <Link href="/shop" className="w-full md:w-auto">
+              <Button size="lg" className="w-full md:w-auto bg-white text-zinc-900 hover:bg-zinc-100 h-14 md:h-16 px-8 md:px-10 rounded-full font-bold text-lg shadow-xl shadow-white/5">
                 Browse Full Catalog
               </Button>
             </Link>
@@ -75,7 +75,7 @@ export default function Home() {
 
       {/* Seller Promo Section */}
       <section className="py-24 container px-4 md:px-8">
-        <div className="bg-teal-600 rounded-[60px] p-12 md:p-20 relative overflow-hidden flex flex-col md:flex-row items-center gap-12">
+        <div className="bg-teal-600 rounded-[40px] md:rounded-[60px] p-6 py-12 md:p-20 relative overflow-hidden flex flex-col md:flex-row items-center gap-12">
           <div className="relative z-10 max-w-2xl space-y-8 text-center md:text-left">
             <h2 className="text-4xl md:text-6xl font-bold text-white font-heading leading-tight">
               Empower Your <br />
@@ -84,11 +84,11 @@ export default function Home() {
             <p className="text-teal-50 text-xl leading-relaxed opacity-90">
               Join our nationwide network of verified sellers. Scale your medical business with advanced inventory tools and 24/7 order management.
             </p>
-            <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-              <Link href="/register?role=SELLER">
-                <Button size="lg" className="bg-white text-teal-700 hover:bg-teal-50 shadow-2xl border-none h-16 px-12 rounded-full font-bold text-xl transition-all hover:scale-105">
+            <div className="flex flex-wrap gap-4 justify-center md:justify-start w-full">
+              <Link href="/register?role=SELLER" className="w-full md:w-auto">
+                <Button size="lg" className="w-full md:w-auto bg-white text-teal-700 hover:bg-teal-50 shadow-2xl border-none h-14 md:h-16 px-8 md:px-12 rounded-full font-bold text-lg md:text-xl transition-all hover:scale-105">
                   Register as Seller
-                  <ArrowRight className="ml-3 h-6 w-6" />
+                  <ArrowRight className="ml-3 h-5 w-5 md:h-6 md:w-6" />
                 </Button>
               </Link>
             </div>
