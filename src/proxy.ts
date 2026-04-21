@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
+export default function proxy(request: NextRequest) {
   // Only apply this to backend-api requests to spoof the Origin header
   // This bypasses the backend's strict CORS and CSRF checks
   if (request.nextUrl.pathname.startsWith('/backend-api/')) {
