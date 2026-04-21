@@ -1,2 +1,2 @@
-const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || "https://medi-server.habibullah.dev";
-export const API_BASE_URL = rawApiUrl.replace(/^ttps:\/\//, 'https://');
+const rawApiUrl = "https://medi-server.habibullah.dev";
+export const API_BASE_URL = typeof window !== "undefined" ? "/backend-api" : rawApiUrl;
