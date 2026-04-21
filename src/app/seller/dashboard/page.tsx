@@ -54,7 +54,7 @@ export default function SellerDashboard() {
        return {
          totalOrders: orders.length,
          activeMedicines: 12, 
-         totalSales: orders.reduce((acc: number, curr: any) => acc + Number(curr.totalPrice), 0),
+         totalSales: orders.reduce((acc: number, curr: any) => acc + Number(curr.totalPrice), 0) / 100,
          pendingOrders: orders.filter((o: any) => o.status === "PENDING").length
        };
     },
