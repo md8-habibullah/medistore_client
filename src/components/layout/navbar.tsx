@@ -40,6 +40,26 @@ export function Navbar() {
   const [mounted, setMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        document.getElementById("desktop-search")?.focus();
+      }
+    };
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, []);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/shop?search=${encodeURIComponent(searchQuery)}`);
+      setIsMobileMenuOpen(false);
+    }
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -101,17 +121,20 @@ export function Navbar() {
         </div>
 
         <div className="hidden lg:flex flex-1 max-w-2xl mx-12">
-          <div className="relative w-full group">
+          <form onSubmit={handleSearch} className="relative w-full group">
             <Search className="absolute left-4 top-3.5 h-5 w-5 text-zinc-400 group-focus-within:text-teal-600 transition-colors" />
             <input 
+              id="desktop-search"
               type="text" 
               placeholder="Search for medicines, health products, brands..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full h-12 pl-12 pr-4 rounded-2xl bg-zinc-50 border-none focus:ring-2 focus:ring-teal-500/20 focus:bg-white transition-all text-sm font-medium shadow-inner"
             />
             <div className="absolute right-3 top-2.5 h-7 px-2 rounded-lg bg-zinc-200 text-zinc-500 text-[10px] font-bold flex items-center gap-1">
                <span className="border border-zinc-300 rounded px-1">⌘</span> K
             </div>
-          </div>
+          </form>
         </div>
 
         <div className="flex items-center gap-4">
@@ -248,14 +271,16 @@ export function Navbar() {
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="lg:hidden absolute top-full left-0 w-full bg-white border-b border-zinc-100 shadow-lg p-4 flex flex-col gap-4 max-h-[calc(100vh-64px)] overflow-y-auto">
-          <div className="flex items-center bg-zinc-50 rounded-2xl px-4 py-3 mb-2">
+          <form onSubmit={handleSearch} className="flex items-center bg-zinc-50 rounded-2xl px-4 py-3 mb-2">
             <Search className="h-5 w-5 text-zinc-400 mr-2" />
             <input 
               type="text" 
               placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-transparent border-none focus:outline-none text-sm font-medium"
             />
-          </div>
+          </form>
           <nav className="flex flex-col gap-2">
             {navLinks.map((link) => (
               <Link
