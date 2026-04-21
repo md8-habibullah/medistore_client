@@ -182,7 +182,7 @@ export function Navbar() {
                       </Link>
                     </DropdownMenuItem>
                     
-                    {(session.user as any).role === "SELLER" && (
+                    {((session.user as any).role === "SELLER" || (session.user as any).role === "ADMIN") && (
                       <DropdownMenuItem asChild>
                         <Link href="/seller/dashboard" className="rounded-xl h-12 cursor-pointer bg-teal-50 text-teal-700 mt-2 hover:bg-teal-100">
                           <LayoutDashboard className="mr-3 h-4 w-4" />
@@ -190,11 +190,11 @@ export function Navbar() {
                         </Link>
                       </DropdownMenuItem>
                     )}
-
+                    
                     {(session.user as any).role === "ADMIN" && (
                       <DropdownMenuItem asChild>
                         <Link href="/admin/dashboard" className="rounded-xl h-12 cursor-pointer bg-purple-50 text-purple-700 mt-2 hover:bg-purple-100">
-                          <LayoutDashboard className="mr-3 h-4 w-4" />
+                          <Shield className="mr-3 h-4 w-4" />
                           <span className="font-bold text-sm">Admin Dashboard</span>
                         </Link>
                       </DropdownMenuItem>

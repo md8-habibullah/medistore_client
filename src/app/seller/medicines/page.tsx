@@ -46,7 +46,8 @@ export default function SellerMedicinesPage() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    if (!sessionLoading && (!session || (session.user as any).role !== "SELLER")) {
+    const role = (session?.user as any).role;
+    if (!sessionLoading && (!session || (role !== "SELLER" && role !== "ADMIN"))) {
       router.push("/");
     }
   }, [session, sessionLoading, router]);
