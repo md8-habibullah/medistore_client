@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSession, signOut } from "@/lib/auth-client";
 import { useCartStore } from "@/lib/cart-store";
 import { Button } from "@/components/ui/button";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { 
   Pill, 
   ShoppingCart, 
@@ -36,6 +36,7 @@ export function Navbar() {
   const { data: session } = useSession();
   const items = useCartStore((state) => state.items);
   const pathname = usePathname();
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -205,7 +206,14 @@ export function Navbar() {
                   <div className="p-2">
                     <DropdownMenuItem 
                       className="rounded-xl h-12 cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50"
-                      onClick={() => signOut()}
+                      onClick={() => signOut({
+                        fetchOptions: {
+                          onSuccess: () => {
+                            router.push("/");
+                            router.refresh();
+                          }
+                        }
+                      })}
                     >
                       <LogOut className="mr-3 h-4 w-4" />
                       <span className="font-bold text-sm">Sign Out Account</span>
