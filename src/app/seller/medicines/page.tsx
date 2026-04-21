@@ -54,8 +54,12 @@ export default function SellerMedicinesPage() {
   const { data: medicines, isLoading } = useQuery({
     queryKey: ["seller-medicines"],
     queryFn: async () => {
-      const res = await axios.get(`${API_BASE_URL}/medicine?sellerID=${session?.user.id}`, { withCredentials: true });
-      return res.data.data || []; // Accessing .data array
+      const isSeller = (session?.user as any).role === "SELLER";
+      const url = isSeller 
+        ? `${API_BASE_URL}/medicine?sellerID=${session?.user.id}`
+        : `${API_BASE_URL}/medicine`;
+      const res = await axios.get(url, { withCredentials: true });
+      return res.data.data || res.data || []; 
     },
     enabled: !!session,
   });

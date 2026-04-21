@@ -59,7 +59,7 @@ export default function SellerOrdersPage() {
     queryKey: ["seller-orders"],
     queryFn: async () => {
       const res = await axios.get(`${API_BASE_URL}/orders/seller-orders`, { withCredentials: true });
-      return res.data.data || [];
+      return res.data.data || res.data || [];
     },
     enabled: !!session,
   });

@@ -49,11 +49,18 @@ export default function SellerDashboard() {
   const { data: stats, isLoading: statsLoading } = useQuery({
     queryKey: ["seller-stats"],
     queryFn: async () => {
-       const res = await axios.get(`${API_BASE_URL}/orders/seller-orders`, { withCredentials: true });
-       const orders = res.data.data || [];
+       const isSeller = (session?.user as any).role === "SELLER";
+       const [ordersRes, medicinesRes] = await Promise.all([
+         axios.get(`${API_BASE_URL}/orders/seller-orders`, { withCredentials: true }),
+         axios.get(isSeller ? `${API_BASE_URL}/medicine?sellerID=${session?.user.id}` : `${API_BASE_URL}/medicine`, { withCredentials: true })
+       ]);
+       
+       const orders = ordersRes.data.data || ordersRes.data || [];
+       const medicines = medicinesRes.data.data || medicinesRes.data || [];
+
        return {
          totalOrders: orders.length,
-         activeMedicines: 12, 
+         activeMedicines: medicines.length || 0, 
          totalSales: orders.reduce((acc: number, curr: any) => acc + Number(curr.totalPrice), 0) / 100,
          pendingOrders: orders.filter((o: any) => o.status === "PENDING").length
        };
@@ -86,12 +93,12 @@ export default function SellerDashboard() {
                  <Store className="h-6 w-6" />
               </div>
               <Badge className="bg-teal-500/20 text-teal-400 border-teal-500/30 font-bold px-3 py-0.5 rounded-full text-[10px] tracking-widest uppercase">
-                 Seller Hub
+                 {(session?.user as any).role === "ADMIN" ? "Admin Hub" : "Seller Hub"}
               </Badge>
            </div>
            <div className="space-y-1">
               <h1 className="text-4xl md:text-5xl font-extrabold font-heading">Dashboard Overview</h1>
-              <p className="text-zinc-400 text-lg">Welcome back, <span className="text-white font-bold">{session?.user.name}</span>. Here&apos;s your pharmacy status.</p>
+              <p className="text-zinc-400 text-lg">Welcome back, <span className="text-white font-bold">{session?.user.name}</span>. Here&apos;s the {(session?.user as any).role === "ADMIN" ? "platform" : "pharmacy"} status.</p>
            </div>
         </div>
         <div className="relative z-10 flex gap-4">
