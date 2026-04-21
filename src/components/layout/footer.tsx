@@ -50,15 +50,15 @@ export function Footer() {
             <ul className="space-y-3 text-sm">
               <li className="flex gap-3">
                 <Phone className="h-5 w-5 text-teal-500" />
-                <span>+1 (555) 123-4567</span>
+                <span>+880 1712-345678</span>
               </li>
               <li className="flex gap-3">
                 <Mail className="h-5 w-5 text-teal-500" />
-                <span>support@medistore.com</span>
+                <span>medi@habibullah.dev</span>
               </li>
               <li className="flex gap-3">
                 <MapPin className="h-5 w-5 text-teal-500" />
-                <span>123 Medical Plaza, Health City, HC 12345</span>
+                <span>Dhaka, Bangladesh</span>
               </li>
             </ul>
           </div>

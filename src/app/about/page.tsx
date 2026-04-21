@@ -1,184 +1,131 @@
 "use client";
 
-import { 
-  ShieldCheck, 
-  Truck, 
-  Users, 
-  Award, 
-  Activity, 
-  CheckCircle2,
-  Heart
-} from "lucide-react";
-import Image from "next/image";
+import { ShieldCheck, Heart, Users, Award, Pill, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const stats = [
-  { label: "Founded", value: "2024" },
-  { label: "Verified Sellers", value: "250+" },
-  { label: "Medicines", value: "10k+" },
-  { label: "Cities Covered", value: "50+" },
-];
-
-const values = [
-  {
-    title: "Unmatched Quality",
-    description: "Every medication on our platform undergoes a rigorous 3-step verification process by medical experts.",
-    icon: ShieldCheck,
-    color: "bg-teal-500",
-  },
-  {
-    title: "Swift Delivery",
-    description: "Our logistics network ensures life-saving medications reach you in record time, safely and securely.",
-    icon: Truck,
-    color: "bg-blue-500",
-  },
-  {
-    title: "Patient First",
-    description: "We design every feature with the patient in mind, ensuring accessibility and affordability for all.",
-    icon: Heart,
-    color: "bg-red-500",
-  },
-  {
-    title: "Professional Network",
-    description: "Connecting you with the most trusted pharmacies and healthcare providers across the country.",
-    icon: Users,
-    color: "bg-purple-500",
-  },
-];
+import Link from "next/link";
+import Image from "next/image";
 
 export default function AboutPage() {
+  const stats = [
+    { label: "Verified Medicines", value: "5,000+" },
+    { label: "Active Customers", value: "50,000+" },
+    { label: "Licensed Sellers", value: "200+" },
+    { label: "Delivery Cities", value: "15+" },
+  ];
+
+  const values = [
+    {
+      icon: ShieldCheck,
+      title: "Authenticity Guaranteed",
+      description: "We strictly verify every seller and product on our platform to ensure you only receive 100% authentic medications.",
+      color: "bg-teal-50 text-teal-600"
+    },
+    {
+      icon: Heart,
+      title: "Patient First",
+      description: "Our platform is designed with the patient's convenience and safety as the ultimate priority in every decision.",
+      color: "bg-red-50 text-red-600"
+    },
+    {
+      icon: Award,
+      title: "Quality Standards",
+      description: "All products are stored and handled according to international medical standards to maintain their efficacy.",
+      color: "bg-blue-50 text-blue-600"
+    }
+  ];
+
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative py-24 md:py-32 overflow-hidden bg-zinc-950">
-        <div className="container relative z-10 px-4 md:px-8">
-          <div className="max-w-3xl space-y-6">
+      <section className="relative py-24 md:py-32 bg-zinc-950 overflow-hidden">
+        <div className="container px-4 md:px-8 relative z-10">
+          <div className="max-w-3xl space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-400 text-xs font-bold uppercase tracking-widest">
+              Our Mission
+            </div>
             <h1 className="text-5xl md:text-7xl font-extrabold text-white font-heading leading-tight">
               Revolutionizing <br />
-              <span className="text-teal-400">Healthcare Delivery.</span>
+              <span className="text-teal-400 italic">Healthcare Access.</span>
             </h1>
-            <p className="text-xl text-zinc-400 leading-relaxed max-w-2xl">
-              MediStore is more than an online pharmacy. We are a technology-driven healthcare ecosystem dedicated to making authentic medications accessible to everyone, everywhere.
+            <p className="text-zinc-400 text-xl leading-relaxed max-w-2xl">
+              MediStore was founded with a simple goal: to make authentic, life-saving medications accessible to everyone, everywhere, at the touch of a button.
             </p>
           </div>
         </div>
-        
-        {/* Abstract Background */}
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-teal-500/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/4 pointer-events-none" />
+        {/* Background glow */}
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-teal-500/10 rounded-full blur-[150px] pointer-events-none" />
       </section>
 
       {/* Stats Section */}
-      <section className="bg-white py-20 border-b border-zinc-100">
+      <section className="py-20 bg-white border-b border-zinc-100">
         <div className="container px-4 md:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
-            {stats.map((stat) => (
-              <div key={stat.label} className="space-y-2 text-center md:text-left">
-                <p className="text-4xl md:text-5xl font-black text-zinc-900 font-heading">{stat.value}</p>
-                <p className="text-sm font-bold text-teal-600 uppercase tracking-widest">{stat.label}</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {stats.map((stat, i) => (
+              <div key={i} className="text-center space-y-2">
+                <p className="text-4xl md:text-5xl font-black text-zinc-900 font-heading tracking-tight">{stat.value}</p>
+                <p className="text-xs font-bold text-zinc-400 uppercase tracking-widest">{stat.label}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Mission & Vision */}
-      <section className="py-32 bg-zinc-50">
+      {/* Story Section */}
+      <section className="py-24 md:py-32">
         <div className="container px-4 md:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-            <div className="relative">
-              <div className="aspect-square rounded-[60px] bg-teal-600 overflow-hidden shadow-2xl rotate-3">
-                <Image 
-                  src="/images/medical_hero_banner_1776588021141.png"
-                  alt="Our Mission"
-                  fill
-                  className="object-cover opacity-80"
-                />
-              </div>
-              <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-white rounded-[40px] shadow-2xl p-8 -rotate-6 hidden md:flex flex-col justify-center gap-4">
-                 <div className="h-12 w-12 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center">
-                    <Activity className="h-6 w-6" />
-                 </div>
-                 <p className="font-bold text-zinc-900 leading-tight">Improving lives through technology.</p>
-              </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div className="space-y-8">
+               <h2 className="text-4xl font-bold text-zinc-900 font-heading">The MediStore Story</h2>
+               <div className="space-y-4 text-zinc-600 leading-relaxed text-lg">
+                 <p>
+                   In 2024, we noticed a massive gap in the online healthcare market. People were struggling to find verified, authentic medications without visiting multiple physical pharmacies.
+                 </p>
+                 <p>
+                   We built MediStore as a platform that doesn't just sell medicine, but builds trust. By connecting licensed pharmacies directly to consumers through a secure, verified portal, we've eliminated the uncertainty of online health shopping.
+                 </p>
+                 <p>
+                   Today, we are the leading OTC pharmacy platform, serving thousands of families daily with high-quality healthcare products and reliable expert advice.
+                 </p>
+               </div>
+               <div className="pt-4">
+                 <Link href="/shop">
+                   <Button size="lg" className="rounded-full bg-teal-600 hover:bg-teal-700 h-14 px-8 font-bold">
+                     Shop With Confidence
+                     <ArrowRight className="ml-2 h-5 w-5" />
+                   </Button>
+                 </Link>
+               </div>
             </div>
-
-            <div className="space-y-10">
-              <div className="space-y-4">
-                <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 font-heading">Our Mission</h2>
-                <p className="text-lg text-zinc-600 leading-relaxed">
-                  To provide a seamless, secure, and transparent platform that bridges the gap between patients and verified medical providers, ensuring no one is ever more than a click away from the care they need.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                 {[
-                   "Direct from verified pharmacies",
-                   "Real-time inventory tracking",
-                   "Expert medical consultation",
-                   "Fastest delivery guarantee"
-                 ].map((item) => (
-                   <div key={item} className="flex items-center gap-3">
-                      <CheckCircle2 className="h-5 w-5 text-teal-600 flex-shrink-0" />
-                      <span className="font-bold text-zinc-700 text-sm">{item}</span>
-                   </div>
-                 ))}
-              </div>
-
-              <Button size="lg" className="bg-zinc-900 hover:bg-zinc-800 h-14 px-8 rounded-2xl font-bold">
-                Learn More About Our Process
-              </Button>
+            <div className="relative aspect-square">
+               <div className="absolute inset-0 bg-teal-600 rounded-[60px] rotate-3 opacity-10" />
+               <div className="absolute inset-0 bg-zinc-900 rounded-[60px] -rotate-3 overflow-hidden flex items-center justify-center p-12">
+                  <Pill className="h-48 w-48 text-teal-500/20 animate-pulse" />
+               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Core Values */}
-      <section className="py-32 bg-white">
+      {/* Values Section */}
+      <section className="py-24 bg-zinc-50">
         <div className="container px-4 md:px-8">
           <div className="text-center max-w-2xl mx-auto mb-20 space-y-4">
-            <h2 className="text-4xl md:text-5xl font-bold text-zinc-900 font-heading">Our Core Values</h2>
-            <p className="text-zinc-500 text-lg font-medium">The principles that guide every decision we make at MediStore.</p>
+            <h2 className="text-4xl font-bold text-zinc-900 font-heading tracking-tight">Our Core Values</h2>
+            <p className="text-zinc-500 text-lg">The principles that guide every interaction on our platform.</p>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value) => (
-              <div key={value.title} className="group p-8 rounded-[40px] bg-zinc-50 hover:bg-white border border-transparent hover:border-zinc-100 hover:shadow-2xl transition-all duration-500">
-                <div className={`h-14 w-14 rounded-2xl ${value.color} text-white flex items-center justify-center mb-8 shadow-lg group-hover:scale-110 transition-transform`}>
-                  <value.icon className="h-7 w-7" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {values.map((value, i) => {
+              const Icon = value.icon;
+              return (
+                <div key={i} className="bg-white p-10 rounded-[40px] border border-zinc-100 shadow-sm space-y-6 hover:shadow-xl transition-all hover:-translate-y-2">
+                   <div className={`p-4 rounded-2xl w-fit ${value.color}`}>
+                      <Icon className="h-8 w-8" />
+                   </div>
+                   <h3 className="text-xl font-bold text-zinc-900">{value.title}</h3>
+                   <p className="text-zinc-500 leading-relaxed text-sm">{value.description}</p>
                 </div>
-                <h3 className="text-xl font-bold text-zinc-900 mb-4 font-heading">{value.title}</h3>
-                <p className="text-zinc-500 text-sm leading-relaxed">
-                  {value.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Join Section */}
-      <section className="py-24 container px-4 md:px-8">
-        <div className="bg-teal-600 rounded-[60px] p-12 md:p-24 text-center space-y-8 relative overflow-hidden">
-          <h2 className="text-4xl md:text-6xl font-bold text-white font-heading relative z-10">
-            Be Part of the <br /> Healthcare Future.
-          </h2>
-          <p className="text-teal-50 text-xl max-w-2xl mx-auto opacity-90 relative z-10">
-            Whether you're a patient looking for care or a pharmacy looking to grow, MediStore is here for you.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4 relative z-10">
-            <Button size="lg" className="bg-white text-teal-700 hover:bg-teal-50 h-16 px-12 rounded-full font-bold text-lg">
-              Start Shopping
-            </Button>
-            <Button size="lg" className="bg-teal-700 hover:bg-teal-800 text-white h-16 px-12 rounded-full font-bold text-lg border-none">
-              Join as a Seller
-            </Button>
-          </div>
-          
-          {/* Background Decoration */}
-          <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-             <div className="absolute top-10 left-10 w-32 h-32 border-4 border-white rounded-full" />
-             <div className="absolute bottom-10 right-10 w-64 h-64 border-8 border-white rounded-full" />
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-white rounded-full" />
+              );
+            })}
           </div>
         </div>
       </section>
