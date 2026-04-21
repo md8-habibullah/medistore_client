@@ -41,7 +41,17 @@ import { toast } from "sonner";
 import { API_BASE_URL } from "@/lib/api-config";
 import { useEffect } from "react";
 
+import { Suspense } from "react";
+
 export default function ShopPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-teal-600" /></div>}>
+      <ShopPageContent />
+    </Suspense>
+  );
+}
+
+function ShopPageContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();

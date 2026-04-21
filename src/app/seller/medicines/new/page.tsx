@@ -60,7 +60,7 @@ export default function MedicineFormPage() {
   const [isFetching, setIsFetching] = useState(isEdit);
 
   const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema) as any,
     defaultValues: {
       name: "",
       description: "",
@@ -73,7 +73,7 @@ export default function MedicineFormPage() {
   });
 
   useEffect(() => {
-    if (!sessionLoading && (!session || (session.user.role !== "SELLER" && session.user.role !== "ADMIN"))) {
+    if (!sessionLoading && (!session || ((session.user as any).role !== "SELLER" && (session.user as any).role !== "ADMIN"))) {
       router.push("/");
     }
 

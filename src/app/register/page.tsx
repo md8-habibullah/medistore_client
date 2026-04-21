@@ -43,7 +43,17 @@ const formSchema = z.object({
   role: z.enum(["CUSTOMER", "SELLER"]),
 });
 
+import { Suspense } from "react";
+
 export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><Loader2 className="h-8 w-8 animate-spin text-teal-600" /></div>}>
+      <RegisterForm />
+    </Suspense>
+  );
+}
+
+function RegisterForm() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -68,7 +78,7 @@ export default function RegisterPage() {
         name: values.name,
         role: values.role, // Pass role as an additional field
         callbackURL: "/login",
-      });
+      } as any);
 
       if (error) {
         console.error("Registration error:", error);
