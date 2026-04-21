@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/backend-api/:path*',
-        destination: 'http://localhost:5000/:path*', // Proxy to Local Backend
+        destination: 'https://medi-server.habibullah.dev/:path*', // Proxy to Backend
       },
     ]
   },
