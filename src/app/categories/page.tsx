@@ -14,75 +14,60 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { API_BASE_URL } from "@/lib/api-config";
 
-const categories = [
-  { 
-    name: "Pain Relief", 
-    icon: Thermometer, 
+const categoryMeta: Record<string, any> = {
+  "prescription": { 
+    icon: Stethoscope, 
     color: "bg-red-50 text-red-600", 
-    border: "border-red-100", 
-    count: 24,
-    description: "Medications for headaches, muscle pain, and fever relief."
+    description: "Prescription-only medications verified by healthcare professionals."
   },
-  { 
-    name: "Cold & Flu", 
-    icon: Activity, 
+  "otc": { 
+    icon: Thermometer, 
     color: "bg-blue-50 text-blue-600", 
-    border: "border-blue-100", 
-    count: 18,
-    description: "Cough syrups, nasal sprays, and flu symptom management."
+    description: "Over-the-counter medications for common ailments and symptoms."
   },
-  { 
-    name: "Digestive Health", 
-    icon: Droplet, 
+  "supplement": { 
+    icon: Heart, 
     color: "bg-green-50 text-green-600", 
-    border: "border-green-100", 
-    count: 15,
-    description: "Antacids, probiotics, and relief for digestive discomfort."
+    description: "Vitamins, minerals, and dietary supplements for wellness."
   },
-  { 
-    name: "Skin Care", 
+  "device": { 
+    icon: Activity, 
+    color: "bg-purple-50 text-purple-600", 
+    description: "Medical equipment and diagnostic tools for health monitoring."
+  },
+  "cosmetic": { 
     icon: Sparkles, 
     color: "bg-pink-50 text-pink-600", 
-    border: "border-pink-100", 
-    count: 32,
-    description: "Dermatologically tested creams, lotions, and treatments."
+    description: "Dermatological products and healthcare-grade beauty items."
   },
-  { 
-    name: "Children's Medicine", 
-    icon: Baby, 
-    color: "bg-purple-50 text-purple-600", 
-    border: "border-purple-100", 
-    count: 12,
-    description: "Gentle and effective medications specifically for kids."
-  },
-  { 
-    name: "Vitamins & Supplements", 
-    icon: Heart, 
-    color: "bg-orange-50 text-orange-600", 
-    border: "border-orange-100", 
-    count: 45,
-    description: "Daily multivitamins, minerals, and herbal supplements."
-  },
-  { 
-    name: "First Aid", 
-    icon: ShieldCheck, 
-    color: "bg-teal-50 text-teal-600", 
-    border: "border-teal-100", 
-    count: 20,
-    description: "Bandages, antiseptics, and essential emergency supplies."
-  },
-  { 
-    name: "Medical Devices", 
-    icon: Stethoscope, 
+  "others": { 
+    icon: Pill, 
     color: "bg-zinc-50 text-zinc-600", 
-    border: "border-zinc-100", 
-    count: 10,
-    description: "Thermometers, BP monitors, and health tracking tools."
+    description: "Miscellaneous health supplies and general pharmacy items."
   },
-];
+};
 
 export default function CategoriesPage() {
+  const [categories, setCategories] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/categories`);
+        setCategories(response.data.data);
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCategories();
+  }, []);
   return (
     <div className="container px-4 py-12 md:px-8">
       <div className="max-w-3xl mb-16 space-y-4">
@@ -92,32 +77,42 @@ export default function CategoriesPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {categories.map((cat) => (
-          <Link 
-            key={cat.name} 
-            href={`/shop?category=${cat.name}`}
-            className="group flex flex-col p-8 rounded-3xl bg-white border border-zinc-100 transition-all hover:shadow-2xl hover:-translate-y-2 hover:border-teal-200"
-          >
-            <div className={`p-5 rounded-2xl w-fit ${cat.color} group-hover:scale-110 transition-transform mb-6 shadow-sm`}>
-              <cat.icon className="h-8 w-8" />
-            </div>
-            <div className="space-y-3 mb-6">
-               <h3 className="text-xl font-bold text-zinc-900 font-heading group-hover:text-teal-600 transition-colors">
-                {cat.name}
-              </h3>
-              <p className="text-sm text-zinc-500 leading-relaxed">
-                {cat.description}
-              </p>
-            </div>
-            <div className="mt-auto flex items-center justify-between">
-              <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest">{cat.count} Items</span>
-              <div className="rounded-full bg-zinc-50 p-2 text-zinc-400 group-hover:bg-teal-600 group-hover:text-white transition-all">
-                <ArrowRight className="h-4 w-4" />
-              </div>
-            </div>
-          </Link>
-        ))}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {loading ? (
+          Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="h-64 rounded-3xl bg-zinc-100 animate-pulse" />
+          ))
+        ) : (
+          categories.map((cat) => {
+            const meta = categoryMeta[cat.name.toLowerCase()] || categoryMeta.others;
+            const Icon = meta.icon;
+            return (
+              <Link 
+                key={cat.name} 
+                href={`/shop?category=${cat.name}`}
+                className="group flex flex-col p-8 rounded-3xl bg-white border border-zinc-100 transition-all hover:shadow-2xl hover:-translate-y-2 hover:border-teal-200"
+              >
+                <div className={`p-5 rounded-2xl w-fit ${meta.color} group-hover:scale-110 transition-transform mb-6 shadow-sm`}>
+                  <Icon className="h-8 w-8" />
+                </div>
+                <div className="space-y-3 mb-6">
+                   <h3 className="text-xl font-bold text-zinc-900 font-heading group-hover:text-teal-600 transition-colors capitalize">
+                    {cat.name}
+                  </h3>
+                  <p className="text-sm text-zinc-500 leading-relaxed">
+                    {meta.description}
+                  </p>
+                </div>
+                <div className="mt-auto flex items-center justify-between">
+                  <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest">Explore Products</span>
+                  <div className="rounded-full bg-zinc-50 p-2 text-zinc-400 group-hover:bg-teal-600 group-hover:text-white transition-all">
+                    <ArrowRight className="h-4 w-4" />
+                  </div>
+                </div>
+              </Link>
+            );
+          })
+        )}
       </div>
 
       {/* Featured Banner */}

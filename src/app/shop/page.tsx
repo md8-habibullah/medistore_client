@@ -101,10 +101,23 @@ function ShopPageContent() {
     },
   });
 
-  const categories = [
-    "All", "Pain Relief", "Cold & Flu", "Digestive", "Skin Care", 
-    "Baby Care", "Supplements", "First Aid"
-  ];
+  const [categories, setCategories] = useState<string[]>(["All"]);
+  const [loadingCats, setLoadingCats] = useState(true);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/categories`);
+        const names = response.data.data.map((c: any) => c.name);
+        setCategories(["All", ...names]);
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      } finally {
+        setLoadingCats(false);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   const manufacturers = [
     "All", "Square Limited", "Beximco Pharma", "Incepta", "Opsonin", "Renata", "ACME"
@@ -129,20 +142,26 @@ function ShopPageContent() {
           <div className="space-y-6">
             <h3 className="text-xl font-bold text-zinc-900 font-heading">Categories</h3>
             <div className="flex flex-col gap-2">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setCategory(cat.toLowerCase())}
-                  className={`flex items-center justify-between p-3 rounded-2xl transition-all ${
-                    category === cat.toLowerCase() 
-                      ? "bg-teal-600 text-white shadow-lg shadow-teal-500/20 font-bold" 
-                      : "text-zinc-600 hover:bg-zinc-100"
-                  }`}
-                >
-                  <span className="text-sm">{cat}</span>
-                  {category === cat.toLowerCase() && <div className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />}
-                </button>
-              ))}
+              {loadingCats ? (
+                Array.from({ length: 5 }).map((_, i) => (
+                  <div key={i} className="h-10 rounded-xl bg-zinc-50 animate-pulse" />
+                ))
+              ) : (
+                categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setCategory(cat.toLowerCase())}
+                    className={`flex items-center justify-between p-3 rounded-2xl transition-all ${
+                      category === cat.toLowerCase() 
+                        ? "bg-teal-600 text-white shadow-lg shadow-teal-500/20 font-bold" 
+                        : "text-zinc-600 hover:bg-zinc-100"
+                    }`}
+                  >
+                    <span className="text-sm capitalize">{cat}</span>
+                    {category === cat.toLowerCase() && <div className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />}
+                  </button>
+                ))
+              )}
             </div>
           </div>
 

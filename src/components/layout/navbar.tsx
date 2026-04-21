@@ -33,7 +33,7 @@ import { Badge } from "@/components/ui/badge";
 
 export function Navbar() {
   const { data: session } = useSession();
-  const { getItemCount } = useCartStore();
+  const items = useCartStore((state) => state.items);
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -47,7 +47,7 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const cartItemCount = mounted ? getItemCount() : 0;
+  const cartItemCount = mounted ? items.reduce((total, item) => total + item.quantity, 0) : 0;
 
   const navLinks = [
     { name: "Home", href: "/" },

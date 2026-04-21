@@ -45,7 +45,7 @@ export default function ProfilePage() {
   const handleUpdateProfile = async () => {
     setIsUpdating(true);
     try {
-      await axios.patch(`${API_BASE_URL}/users/profile`, { name }, { withCredentials: true });
+      await axios.patch(`${API_BASE_URL}/users/updateProfile`, { name }, { withCredentials: true });
       toast.success("Profile updated successfully");
       setIsEditing(false);
       router.refresh();
