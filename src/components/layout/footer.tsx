@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Pill, Facebook, Twitter, Instagram, Mail, Phone, MapPin } from "lucide-react";
+import { Pill, Github, Linkedin, Globe, Mail, Phone, MapPin } from "lucide-react";
 
 export function Footer() {
   return (
@@ -19,9 +19,9 @@ export function Footer() {
               Your trusted online pharmacy for OTC medicines. We provide verified, high-quality healthcare products delivered right to your doorstep.
             </p>
             <div className="flex gap-4 pt-2">
-              <Link href="#" className="hover:text-teal-500 transition-colors"><Facebook className="h-5 w-5" /></Link>
-              <Link href="#" className="hover:text-teal-500 transition-colors"><Twitter className="h-5 w-5" /></Link>
-              <Link href="#" className="hover:text-teal-500 transition-colors"><Instagram className="h-5 w-5" /></Link>
+              <Link href="https://github.com/md8-habibullah" target="_blank" className="hover:text-teal-500 transition-colors"><Github className="h-5 w-5" /></Link>
+              <Link href="https://habibullah.dev" target="_blank" className="hover:text-teal-500 transition-colors"><Globe className="h-5 w-5" /></Link>
+              <Link href="https://linkedin.com/in/md8-habibullah" target="_blank" className="hover:text-teal-500 transition-colors"><Linkedin className="h-5 w-5" /></Link>
             </div>
           </div>
 
@@ -65,7 +65,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 border-t border-zinc-800 pt-8 text-center text-xs text-zinc-500">
-          <p>© {new Date().getFullYear()} MediStore Online Shop. All rights reserved. | OTC Medicines Only</p>
+          <p>© {new Date().getFullYear()} <Link href="https://habibullah.dev" className="hover:text-white transition-colors">habibullah.dev</Link>. All rights reserved. | OTC Medicines Only</p>
         </div>
       </div>
     </footer>
