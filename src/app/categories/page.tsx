@@ -90,22 +90,41 @@ export default function CategoriesPage() {
           categories.map((cat) => {
             const meta = categoryMeta[cat.name.toLowerCase()] || categoryMeta.others;
             const Icon = meta.icon;
+            const medicine = cat.medicines?.[0];
             return (
               <Link 
                 key={cat.name} 
                 href={`/shop?category=${cat.name}`}
                 className="group flex flex-col p-8 rounded-3xl bg-white border border-zinc-100 transition-all hover:shadow-2xl hover:-translate-y-2 hover:border-teal-200"
               >
-                <div className={`p-5 rounded-2xl w-fit ${meta.color} group-hover:scale-110 transition-transform mb-6 shadow-sm`}>
-                  <Icon className="h-8 w-8" />
+                <div className="flex justify-between items-start mb-6">
+                  <div className={`p-4 rounded-2xl w-fit ${meta.color} group-hover:scale-110 transition-transform shadow-sm`}>
+                    <Icon className="h-7 w-7" />
+                  </div>
+                  {medicine && (
+                    <div className="bg-teal-50 text-teal-700 px-3 py-1 rounded-full text-xs font-bold border border-teal-100 shadow-sm flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 bg-teal-500 rounded-full animate-pulse"></span>
+                      In Stock
+                    </div>
+                  )}
                 </div>
                 <div className="space-y-3 mb-6">
                    <h3 className="text-xl font-bold text-zinc-900 font-heading group-hover:text-teal-600 transition-colors capitalize">
                     {cat.name}
                   </h3>
-                  <p className="text-sm text-zinc-500 leading-relaxed">
-                    {meta.description}
+                  <p className="text-sm text-zinc-500 leading-relaxed line-clamp-2">
+                    {medicine ? (
+                      <>Sample: <span className="font-semibold text-zinc-700">{medicine.name}</span></>
+                    ) : (
+                      meta.description
+                    )}
                   </p>
+                  {medicine && (
+                    <div className="pt-2">
+                      <p className="text-sm font-medium text-zinc-400">Starting from</p>
+                      <p className="text-lg font-bold text-teal-600">${medicine.price}</p>
+                    </div>
+                  )}
                 </div>
                 <div className="mt-auto flex items-center justify-between">
                   <span className="text-xs font-bold text-zinc-400 uppercase tracking-widest">Explore Products</span>
